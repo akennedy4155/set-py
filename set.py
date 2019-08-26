@@ -84,8 +84,20 @@ class Board():
     def __repr__(self):
         return f"Board:\n\n*{self.deck}*\n\nPlay Area:\n{tabulate(self.play_area, tablefmt='grid')}"
 
-    def isSet(self):
-        pass
+    def isSet(self, coords):
+        potential_set = [self.play_area[row][col] for row,col in coords]
+        for category in cfg.card_config.keys():
+            if not (self.allSame(potential_set, category) or self.allDifferent(potential_set, category)):
+                return False
+        return True
+
+    def allSame(self, card_list, cat):
+        cat_vals = [card.card_params[cat] for card in card_list]
+        return len(set(cat_vals)) == 1
+
+    def allDifferent(self, card_list, cat):
+        cat_vals = [card.card_params[cat] for card in card_list]
+        return len(set(cat_vals)) == 3
     
     def takeSet(self):
         pass
@@ -94,6 +106,16 @@ class Board():
         pass
 
 
-b = Board()
-print(b)
+# b = Board()
+# print(b)
 # print([str(c) for c in d.peek(2)])
+
+sample_list = [
+    [0,1,2,3],
+    [4,5,6,7],
+    [8,9,10,11]
+]
+
+coords = [(0,1),(1,2),(2,3)]
+
+print([sample_list[row][col] for row,col in coords])
